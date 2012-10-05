@@ -24,6 +24,8 @@ class User(db.Model):
         backref = db.backref('followers', lazy = 'dynamic'),
         lazy = 'dynamic')
 
+
+
     @staticmethod
     def make_unique_nickname(nickname):
         if User.query.filter_by(nickname = nickname).first() == None:
@@ -66,6 +68,7 @@ class User(db.Model):
 
     def followed_posts(self):
         return Post.query.join(followers, (followers.c.followed_id == Post.user_id)).filter(followers.c.follower_id == self.id).order_by(Post.timestamp.desc())
+
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
